@@ -13,18 +13,15 @@ function movePlayers()
       player.walking_state = {walking = false, direction = direction}
       playerData.flag = playerData.flag - 1
     end
-
   end
 end
 
 function setUnderground(player, belt, spd)
-  setInvisible()
   playersMoving[player.index] = { player = player, direction = belt.direction, output = belt.neighbours, spd = spd, flag = spd, flashOn = player.is_flashlight_enabled() }
   player.disable_flashlight()
 end
 
 function resetPlayer(player, belt)
-  setVisible()
   local playerData = playersMoving[player.index]
   if playerData.flashOn then player.enable_flashlight() end
   playersMoving[player.index] = nil
@@ -54,14 +51,15 @@ function checkPlayersOverBelt()
   for _, player in pairs(game.players) do
     local beltData = getBeltUnder(player)
 
-    if beltData then
-      local belt = beltData.belt
-      local spd = beltData.spd
-      if belt.belt_to_ground_type == 'input' and not playersMoving[player.index] and belt.neighbours then
-        setUnderground(player, belt, spd)
-      elseif playersMoving[player.index] and playersMoving[player.index].output == belt then
-        resetPlayer(player, belt)
-      end
+    if not beltData then return end
+
+    local belt = beltData.belt
+    local spd = beltData.spd
+
+    if belt.belt_to_ground_type == 'input' and not playersMoving[player.index] and belt.neighbours then
+      setUnderground(player, belt, spd)
+    elseif playersMoving[player.index] and playersMoving[player.index].output == belt then
+      resetPlayer(player, belt)
     end
   end
 end
@@ -72,9 +70,3 @@ function onTick()
 end
 
 script.on_event(defines.events.on_tick, onTick)
-
-function print(msg, use_serpent)
-  use_serpent = use_serpent or true
-  if use_serpent then game.print(serpent.block(msg))
-  else game.print(tostring(msg)) end
-end
