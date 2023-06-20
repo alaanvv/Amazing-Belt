@@ -1,30 +1,14 @@
--- Falta deixar invisivel e imune a belt
-playersMoving = {}
-
-function movePlayers()
-  for _, playerData in pairs(playersMoving) do
-    local player = playerData.player
-    local direction = playerData.direction
-    player.character_running_speed_modifier = 0.3
-    if playerData.flag == 0 then
-      player.walking_state = {walking = true, direction = direction}
-      playerData.flag = playerData.spd
-    else 
-      player.walking_state = {walking = false, direction = direction}
-      playerData.flag = playerData.flag - 1
-    end
-  end
-end
+playersUndergroung = {}
 
 function setUnderground(player, belt, spd)
-  playersMoving[player.index] = { player = player, direction = belt.direction, output = belt.neighbours, spd = spd, flag = spd, flashOn = player.is_flashlight_enabled() }
+  playersUndergroung[player.index] = { player = player, direction = belt.direction, output = belt.neighbours, spd = spd, flag = spd, flashOn = player.is_flashlight_enabled() }
   player.disable_flashlight()
 end
 
-function resetPlayer(player, belt)
-  local playerData = playersMoving[player.index]
+function setOverground(player, belt)
+  local playerData = playersUndergroung[player.index]
   if playerData.flashOn then player.enable_flashlight() end
-  playersMoving[player.index] = nil
+  playersUndergroung[player.index] = nil
 end
 
 function getBeltUnder(player)
@@ -47,26 +31,45 @@ function getBeltUnder(player)
   end
 end
 
-function checkPlayersOverBelt()
+function checkPlayersOverInputBelt()
   for _, player in pairs(game.players) do
     local beltData = getBeltUnder(player)
 
     if not beltData then return end
 
     local belt = beltData.belt
-    local spd = beltData.spd
+    local speed = beltData.speed
 
-    if belt.belt_to_ground_type == 'input' and not playersMoving[player.index] and belt.neighbours then
-      setUnderground(player, belt, spd)
-    elseif playersMoving[player.index] and playersMoving[player.index].output == belt then
-      resetPlayer(player, belt)
+    -- Is an input + Player is over ground + Belt has an exit
+    if belt.belt_to_ground_type == 'input' and not playersUndergroung[player.index] and belt.neighbours then
+      setUnderground(player, belt, speed)
+    -- Player is under ground + Belt is the exit
+    elseif playersUndergroung[player.index] and playersUndergroung[player.index].output == belt then
+      setOverground(player, belt)
+    end
+  end
+end
+
+function moveUndergroundPlayers()
+  for _, playerData in pairs(playersUndergroung) do
+    local player = playerData.player
+    local direction = playerData.direction
+    player.character_running_speed_modifier = 0.3
+    if playerData.flag == 0 then
+      player.walking_state = {walking = true, direction = direction}
+      playerData.flag = playerData.spd
+    else 
+      player.walking_state = {walking = false, direction = direction}
+      playerData.flag = playerData.flag - 1
     end
   end
 end
 
 function onTick() 
-  checkPlayersOverBelt()
-  movePlayers()
+  checkPlayersOverInputBelt()
+  moveUndergroundPlayers()
 end
+
+-- 
 
 script.on_event(defines.events.on_tick, onTick)
