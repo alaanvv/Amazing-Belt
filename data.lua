@@ -1,6 +1,6 @@
 data:extend{{
     type = "car",
-    name = "invisible-car",
+    name = "Underground",
     icon = "__base__/graphics/icons/underground-belt.png",
     icon_size = 64,
     icon_mipmaps = 4,
@@ -21,13 +21,13 @@ data:extend{{
     }},
     collision_box = {{-1, -1}, {1, 1}},
     collision_mask = {},
-    selection_box = {{-1, -1}, {1, 1}},
+    selection_box = {{-0, -0}, {0, 0}},
     effectivity = 1e-44,
     braking_force = 1e-44,
     energy_source = {
         type = "void"
     },
-    consumption = "150kW",
+    consumption = "0kW",
     friction = 1e-44,
     render_layer = "object",
     animation = {
@@ -40,8 +40,8 @@ data:extend{{
             frame_count = 1
         }}
     },
-    turret_rotation_speed = 0.35 / 60,
+    turret_rotation_speed = 1e-44,
     rotation_speed = 1e-44,
-    weight = 7,
+    weight = 1e-44,
     inventory_size = 0
 }}
