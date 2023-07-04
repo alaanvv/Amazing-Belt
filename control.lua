@@ -1,4 +1,3 @@
--- alanv
 undergroundPlayersData = {}
 
 function setUnderground(player, belt)
