@@ -1,22 +1,22 @@
 data:extend{{
-    type = "car",
-    name = "Underground",
-    icon = "__base__/graphics/icons/underground-belt.png",
+    type = 'car',
+    name = 'Underground',
+    icon = '__base__/graphics/icons/underground-belt.png',
     icon_size = 64,
     icon_mipmaps = 4,
-    flags = {"placeable-neutral", "player-creation", "placeable-off-grid", "not-flammable"},
+    flags = {'placeable-neutral', 'player-creation', 'placeable-off-grid', 'not-flammable'},
     max_health = 100,
     energy_per_hit_point = 1,
     has_belt_immunity = true,
     resistances = {{
-        type = "fire",
+        type = 'fire',
         percent = 100
     }, {
-        type = "impact",
+        type = 'impact',
         percent = 100,
         decrease = 50
     }, {
-        type = "acid",
+        type = 'acid',
         percent = 100
     }},
     collision_box = {{-1, -1}, {1, 1}},
@@ -25,15 +25,15 @@ data:extend{{
     effectivity = 1e-44,
     braking_force = 1e-44,
     energy_source = {
-        type = "void"
+        type = 'void'
     },
-    consumption = "0kW",
+    consumption = '0kW',
     friction = 1e-44,
-    render_layer = "object",
+    render_layer = 'object',
     animation = {
         layers = {{
-            filename = "__core__/graphics/empty.png",
-            priority = "low",
+            filename = '__core__/graphics/empty.png',
+            priority = 'low',
             direction_count = 1,
             width = 1,
             height = 1,

@@ -3,7 +3,6 @@
 	"version": "0.0.1",
 	"title": "Amazing Belt",
 	"author": "alaanvv",
-	"factorio_version": "1.1", 
-	"contact": "alaanvv#5148", 
-	"description": "Realistic belts..."
+	"description": "Realistic belts...",
+	"factorio_version": "1.1"
 }
